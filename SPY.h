@@ -151,6 +151,6 @@ auto create(R (T::*)(Args...) const volatile)
  * SPY returns a (derived) instance of Hook that can be used to add Hooks to.
  */
 
-#define SPY(F) decltype(spy::impl::create(F))::Instance<F>(#F)
+#define SPY(F) typename decltype(spy::impl::create(F))::template Instance<F>(#F)
 
 #endif

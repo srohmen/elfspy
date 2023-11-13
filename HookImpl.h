@@ -76,6 +76,26 @@ void HookImpl<CRTP, void, ArgTypes...>::thunk(ArgTypes... args)
   (*Base::patch_)(std::forward<ArgTypes>(args)...);
 }
 
+/// specialisation for const void return
+template <typename CRTP, typename... ArgTypes>
+class HookImpl<CRTP, const void, ArgTypes...>
+  : public HookBase<CRTP, const void, ArgTypes...>
+{
+protected:
+  static const void thunk(ArgTypes... args);
+
+private:
+  using Base = HookBase<CRTP, const void, ArgTypes...>;
+};
+
+template <typename CRTP, typename... ArgTypes>
+const void HookImpl<CRTP, const void, ArgTypes...>::thunk(ArgTypes... args)
+{
+  Base::run_thunks(std::forward<ArgTypes>(args)...);
+  (*Base::patch_)(std::forward<ArgTypes>(args)...);
+}
+
+
 
 } // namespace spy
 
